@@ -54,21 +54,21 @@ output to, then run the above listed noise suppression on it.
 
 1. Install prerequisites
 
-    ```
+    ```sh
     $ sudo apt-get update
     $ sudo apt-get install -y git build-essential cmake
     ```
 
 2. Download and compile the `noise-suppression-for-voice` plugin like so:
 
-    ```
+    ```sh
     $ git clone https://github.com/werman/noise-suppression-for-voice.git
     $ cd noise-suppression-for-voice
     $ mkdir build
     $ cd build
     $ cmake -DCMAKE_BUILD_TYPE=Release ..
     $ make -j
-    $ sudo mkdir /opt/noise-suppression/lib
+    $ sudo mkdir -p /opt/noise-suppression/lib
     $ sudo cp bin/ladspa/librnnoise_ladspa.so /opt/noise-suppression/lib
     ```
 
@@ -92,7 +92,7 @@ output to, then run the above listed noise suppression on it.
 
     **Automatic Login Version for ~/.config/pulse/default.pa**
 
-        ```conf
+        ```
         .include /etc/pulse/default.pa
 
         # final virtual output device; processes the noise suppression
@@ -193,5 +193,6 @@ Instructions:
 
 ## Version History
 
+* 2022-07-10: Fix minor typos
 * 2022-07-09: Initial Version by [ahrbe1](https://github.com/ahrbe1)
 
