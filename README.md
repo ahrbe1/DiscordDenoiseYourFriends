@@ -54,14 +54,14 @@ output to, then run the above listed noise suppression on it.
 
 1. Install prerequisites
 
-    ```sh
+    ```
     $ sudo apt-get update
     $ sudo apt-get install -y git build-essential cmake
     ```
 
 2. Download and compile the `noise-suppression-for-voice` plugin like so:
 
-    ```sh
+    ```
     $ git clone https://github.com/werman/noise-suppression-for-voice.git
     $ cd noise-suppression-for-voice
     $ mkdir build
@@ -82,28 +82,28 @@ output to, then run the above listed noise suppression on it.
 
     **One-off command-line version**
 
-        ```sh
-        $ pacmd load-module module-ladspa-sink sink_name=discord_denoise_input label=noise_suppressor_stereo channels=2 plugin=/opt/noise-suppression/lib/librnnoise_ladspa.so control=50
+    ```
+    $ pacmd load-module module-ladspa-sink sink_name=discord_denoise_input label=noise_suppressor_stereo channels=2 plugin=/opt/noise-suppression/lib/librnnoise_ladspa.so control=50
 
-        $ pacmd load-module module-null-sink sink_name=discord_input sink_properties=device.description=Discord_Denoiser_Input rate=48000
+    $ pacmd load-module module-null-sink sink_name=discord_input sink_properties=device.description=Discord_Denoiser_Input rate=48000
 
-        $ pacmd load-module module-loopback source=discord_input.monitor sink=discord_denoise_input channels=2 source_dont_move=true sink_dont_move=true latency_msec=1
-        ```
+    $ pacmd load-module module-loopback source=discord_input.monitor sink=discord_denoise_input channels=2 source_dont_move=true sink_dont_move=true latency_msec=1
+    ```
 
     **Automatic Login Version for ~/.config/pulse/default.pa**
 
-        ```
-        .include /etc/pulse/default.pa
+    ```
+    .include /etc/pulse/default.pa
 
-        # final virtual output device; processes the noise suppression
-        load-module module-ladspa-sink sink_name=discord_denoise_input label=noise_suppressor_stereo channels=2 plugin=/opt/noise-suppression/lib/librnnoise_ladspa.so control=50
+    # final virtual output device; processes the noise suppression
+    load-module module-ladspa-sink sink_name=discord_denoise_input label=noise_suppressor_stereo channels=2 plugin=/opt/noise-suppression/lib/librnnoise_ladspa.so control=50
 
-        # virtual device that we connect discord output to
-        load-module module-null-sink sink_name=discord_input sink_properties=device.description=Discord_Denoiser_Input rate=48000
+    # virtual device that we connect discord output to
+    load-module module-null-sink sink_name=discord_input sink_properties=device.description=Discord_Denoiser_Input rate=48000
 
-        # discord output gets forwarded to the noise suppressor
-        load-module module-loopback source=discord_input.monitor sink=discord_denoise_input channels=2 source_dont_move=true sink_dont_move=true latency_msec=1
-        ```
+    # discord output gets forwarded to the noise suppressor
+    load-module module-loopback source=discord_input.monitor sink=discord_denoise_input channels=2 source_dont_move=true sink_dont_move=true latency_msec=1
+    ```
 
 4. Configure Discord:
 
