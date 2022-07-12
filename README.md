@@ -129,6 +129,15 @@ output to, then run the above listed noise suppression on it.
     pretty well for my friend's loud keyboard noises. But feel free to tweak
     it to your liking.
 
+7. Troubleshooting.
+
+   * I noticed on my machine that sometimes I get crackling/popping on non-denoised
+   channels when this is enabled. I suspect it's fairly CPU intensive to do
+   denoising. Also, the audio must be resampled from 44.1kHz to 48kHz, because
+   the plugin only supports 48kHz audio. I found that setting pulseaudio to slightly
+   higher priority resolved the issue on my machine. For example, in `/etc/pulse/daemon.conf`
+   bumping `nice-level = -11` to `nice-level = -15` resolved the issue for me.
+
 
 ## Windows
 
@@ -193,6 +202,7 @@ Instructions:
 
 ## Version History
 
+* 2022-07-11: Add note about pulseaudio priority
 * 2022-07-10: Fix minor typos
 * 2022-07-09: Initial Version by [ahrbe1](https://github.com/ahrbe1)
 
