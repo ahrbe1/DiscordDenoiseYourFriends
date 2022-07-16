@@ -83,11 +83,11 @@ output to, then run the above listed noise suppression on it.
     **One-off command-line version**
 
     ```
-    $ pacmd load-module module-ladspa-sink sink_name=discord_denoise_input label=noise_suppressor_stereo channels=2 plugin=/opt/noise-suppression/lib/librnnoise_ladspa.so control=50
+    $ pacmd load-module module-ladspa-sink sink_name=discord_denoise_input label=noise_suppressor_stereo plugin=/opt/noise-suppression/lib/librnnoise_ladspa.so control=50
 
-    $ pacmd load-module module-null-sink sink_name=discord_input sink_properties=device.description=Discord_Denoiser_Input rate=48000
+    $ pacmd load-module module-null-sink sink_name=discord_input sink_properties=device.description=Discord_Denoiser_Input
 
-    $ pacmd load-module module-loopback source=discord_input.monitor sink=discord_denoise_input channels=2 source_dont_move=true sink_dont_move=true latency_msec=1
+    $ pacmd load-module module-loopback source=discord_input.monitor sink=discord_denoise_input source_dont_move=true sink_dont_move=true latency_msec=1
     ```
 
     **Automatic Login Version for ~/.config/pulse/default.pa**
@@ -96,13 +96,13 @@ output to, then run the above listed noise suppression on it.
     .include /etc/pulse/default.pa
 
     # final virtual output device; processes the noise suppression
-    load-module module-ladspa-sink sink_name=discord_denoise_input label=noise_suppressor_stereo channels=2 plugin=/opt/noise-suppression/lib/librnnoise_ladspa.so control=50
+    load-module module-ladspa-sink sink_name=discord_denoise_input label=noise_suppressor_stereo plugin=/opt/noise-suppression/lib/librnnoise_ladspa.so control=50
 
     # virtual device that we connect discord output to
-    load-module module-null-sink sink_name=discord_input sink_properties=device.description=Discord_Denoiser_Input rate=48000
+    load-module module-null-sink sink_name=discord_input sink_properties=device.description=Discord_Denoiser_Input
 
     # discord output gets forwarded to the noise suppressor
-    load-module module-loopback source=discord_input.monitor sink=discord_denoise_input channels=2 source_dont_move=true sink_dont_move=true latency_msec=1
+    load-module module-loopback source=discord_input.monitor sink=discord_denoise_input source_dont_move=true sink_dont_move=true latency_msec=1
     ```
 
 4. Configure Discord:
@@ -132,12 +132,12 @@ output to, then run the above listed noise suppression on it.
 7. Troubleshooting.
 
    * I noticed on my machine that sometimes I get crackling/popping on non-denoised
-   channels when this is enabled. I suspect it's fairly CPU intensive to do
-   denoising. Also, the audio must be resampled from 44.1kHz to 48kHz, because
-   the plugin only supports 48kHz audio. I found that setting pulseaudio to slightly
-   higher priority resolved the issue on my machine. For example, in `/etc/pulse/daemon.conf`
-   bumping `nice-level = -11` to `nice-level = -15` resolved the issue for me.
+   channels when this is enabled. This plugin seems to work best on my machine
+   when applying the `tsched=0` fix described here:
 
+   https://wiki.archlinux.org/title/PulseAudio/Troubleshooting#Glitches,_skips_or_crackling
+
+   That page has a lot of useful troubleshooting ideas if you experience issues.
 
 ## Windows
 
@@ -202,6 +202,7 @@ Instructions:
 
 ## Version History
 
+* 2022-07-16: Updated with tsched=0 fix
 * 2022-07-11: Add note about pulseaudio priority
 * 2022-07-10: Fix minor typos
 * 2022-07-09: Initial Version by [ahrbe1](https://github.com/ahrbe1)
